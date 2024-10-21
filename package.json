@@ -6,21 +6,33 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "schema": "sanity schema extract --enforce-required-fields",
+    "query": "sanity typegen generate"
   },
   "dependencies": {
+    "@portabletext/react": "^3.1.0",
+    "@sanity/client": "^6.22.2",
+    "@sanity/icons": "^3.4.0",
+    "@sanity/image-url": "^1.0.2",
+    "@sanity/preview-url-secret": "^1.6.21",
+    "@sanity/vision": "3",
+    "next": "14.2.15",
+    "next-sanity": "^9.5.5",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.15"
+    "sanity": "3",
+    "styled-components": "6"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.15"
+    "typescript": "^5"
   }
 }
