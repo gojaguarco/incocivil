@@ -11,11 +11,10 @@ export const pagesType = defineType({
       name: "homePage",
       title: "Home",
       type: "array",
-      of: [{ type: "heroSection" }, { type: "servicesSection" }],
-
-      validation: (Rule) => Rule.custom((content) => {
+      of: [{ type: "heroSection" }, { type: "servicesSection" }, { type: 'whyusSection' }, { type: 'surfaceSliderSection' }, { type: 'faqSection' }, { type: 'contactSection' }],
+      validation: (Rule) => [
+        Rule.custom((content) => {
           // Verifica si el contenido existe
-
           // Crear un objeto para contar cuántos elementos hay de cada tipo
           //@ts-ignore
           const typeCounts = content.reduce((acc, item) => {
@@ -48,6 +47,8 @@ export const pagesType = defineType({
                 message: "Solo puede haber una sección de cada tipo. Por favor elimine las duplicadas.",
               };
         }),
+        Rule.max(6)
+      ],
     }),
   ],
 });

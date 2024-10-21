@@ -1,6 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import { imageSchema } from './generalSchemas'
+import { imageSchema } from '../generalSchemas'
 
 export const postType = defineType({
   name: 'post',

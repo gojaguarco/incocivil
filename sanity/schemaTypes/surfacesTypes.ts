@@ -43,7 +43,7 @@ export const surfaceType = defineType({
             name: 'type',
             title: 'Tipo de Superficie',
             type: 'reference',
-            to: {type: 'surfaceTypes'},
+            to: { type: 'surfaceTypes' },
         })
     ]
 })

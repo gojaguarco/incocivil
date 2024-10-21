@@ -1,6 +1,6 @@
 import type { StructureResolver } from "sanity/structure";
 import { pagesType } from "./schemaTypes/pagesType";
-import { DocumentTextIcon } from "@sanity/icons";
+import { DocumentTextIcon, ProjectsIcon, ThLargeIcon, TiersIcon, UlistIcon, WrenchIcon } from "@sanity/icons";
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
@@ -17,6 +17,23 @@ export const structure: StructureResolver = (S) =>
             .documentId(pagesType.name)
             .title(pagesType.title || "")
         ),
+      S.listItem()
+        .title('Superficies')
+        .icon(ProjectsIcon)
+        .child(
+          S.list()
+            .title('Superficies')
+            .items([
+              S.documentTypeListItem('surfaceTypes').title('Tipos de Superficie').icon(ThLargeIcon),
+              S.documentTypeListItem('surface').title('Superficies').icon(TiersIcon)
+            ])
+        ),
+      S.documentTypeListItem('faq')
+        .title('Preguntas Frecuentes')
+        .icon(UlistIcon),
+      S.documentTypeListItem('service')
+        .title('Servicios')
+        .icon(WrenchIcon),
       S.listItem()
         .title("Blogs")
         .icon(DocumentTextIcon)
