@@ -1,6 +1,5 @@
-import {defineType, defineArrayMember} from 'sanity'
-import {ImageIcon} from '@sanity/icons'
-import { imageSchema } from './generalSchemas'
+import {defineType, defineArrayMember, defineField} from 'sanity'
+import { ImageSchema, VideoSchema } from './generalSchemas'
 
 /**
  * This is the schema type for block content used in the post document type
@@ -61,6 +60,29 @@ export const blockContentType = defineType({
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array
     // as a block type.
-    imageSchema
+    ImageSchema,
+    defineField({
+      name: "video",
+      title: "Video",
+      type: "object",
+      fields: [
+        defineField({
+          name: "video",
+          title: "Video",
+          type: "file",
+          // group: "general",
+          options: {
+            accept: "video/*",
+          },
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "imagenDeCarga",
+          title: "Imagen de Carga",
+          type: "imageObject",
+        })
+      ],
+      validation: (Rule) => Rule.required(),
+    })
   ],
 })

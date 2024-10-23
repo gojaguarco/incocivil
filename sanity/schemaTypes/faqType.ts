@@ -1,9 +1,11 @@
+import { ComposeIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
 export const faqType = defineType({
   name: 'faq',
   title: 'Pregunta Frecuente',
   type: 'document',
+  icon: ComposeIcon,
   fields: [
     defineField({
       name: 'question',
@@ -17,5 +19,5 @@ export const faqType = defineType({
       type: 'text',
       validation: (Rule) => Rule.required(),
     }),
-  ]
+  ],
 })

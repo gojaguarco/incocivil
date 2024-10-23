@@ -1,8 +1,8 @@
 import { PresentationIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
-export const heroSectionType = defineType({
-  name: 'heroSection',
+export const homeHeroSectionType = defineType({
+  name: 'homeHeroSection',
   title: 'Sección Principal (Hero)',
   type: 'document',
   icon: PresentationIcon,

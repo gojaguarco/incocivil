@@ -1,6 +1,7 @@
 import type { StructureResolver } from "sanity/structure";
 import { pagesType } from "./schemaTypes/pagesType";
-import { DocumentTextIcon, ProjectsIcon, ThLargeIcon, TiersIcon, UlistIcon, WrenchIcon } from "@sanity/icons";
+import { DocumentTextIcon, ImagesIcon, ProjectsIcon, ThLargeIcon, TiersIcon, UlistIcon, WrenchIcon } from "@sanity/icons";
+import { configType } from "./schemaTypes/configType";
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
@@ -19,7 +20,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem()
         .title('Superficies')
-        .icon(ProjectsIcon)
+        .icon(ImagesIcon)
         .child(
           S.list()
             .title('Superficies')
@@ -28,12 +29,15 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('surface').title('Superficies').icon(TiersIcon)
             ])
         ),
-      S.documentTypeListItem('faq')
-        .title('Preguntas Frecuentes')
-        .icon(UlistIcon),
+      S.documentTypeListItem('project')
+        .title('Proyectos')
+        .icon(ProjectsIcon),
       S.documentTypeListItem('service')
         .title('Servicios')
         .icon(WrenchIcon),
+      S.documentTypeListItem('faq')
+        .title('Preguntas Frecuentes')
+        .icon(UlistIcon),
       S.listItem()
         .title("Blogs")
         .icon(DocumentTextIcon)
@@ -43,7 +47,16 @@ export const structure: StructureResolver = (S) =>
             .items([
               S.documentTypeListItem("post").title("Publicaciones"),
               S.documentTypeListItem("category").title("Categorías"),
-              S.documentTypeListItem("author").title("Autores"),
             ])
         ),
+      S.listItem()
+      .title(configType.title || "")
+      .icon(configType.icon)
+      .child(
+        S.editor()
+          .id(configType.name)
+          .schemaType(configType.name)
+          .documentId(configType.name)
+          .title(configType.title || "")
+      ),
     ]);

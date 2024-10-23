@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { imageSchema } from "./generalSchemas";
+import { ImageSchema } from "../generalSchemas";
 
 export const secondaryServiceType = defineType({
   name: 'secondaryService',
@@ -18,7 +18,7 @@ export const secondaryServiceType = defineType({
       type: 'text',
       validation: (Rule) => Rule.required(),
     }),
-    imageSchema,
+    ImageSchema,
     defineField({
       name: 'reference',
       title: 'Referencia al Servicio',
@@ -26,19 +26,6 @@ export const secondaryServiceType = defineType({
       to: [{type: 'service'}],
       validation: (Rule) => Rule.required(),
     })
-  ]
-})
-
-export const serviceType = defineType({
-  name: 'service',
-  title: 'Servicio',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Nombre del Servicio',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    })
-  ]
+  ],
+  
 })

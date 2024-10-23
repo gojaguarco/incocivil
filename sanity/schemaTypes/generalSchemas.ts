@@ -1,6 +1,6 @@
 import { defineField } from "sanity";
 
-export const imageSchema = defineField({
+export const ImageSchema = defineField({
   name: "imageObject",
   title: 'Imagen',
   type: "image",
@@ -18,7 +18,7 @@ export const imageSchema = defineField({
   validation: (Rule) => Rule.required(),
 });
 
-export const videoSchema = defineField({
+export const VideoSchema = defineField({
   name: "videoObject",
   title: "Video",
   type: "object",
@@ -75,5 +75,6 @@ export const ImageOrVideoSchema = defineField({
       //@ts-ignore
       validation: Rule => Rule.custom((_, context) => (context.parent?.imagenOVideo === false && context.parent?.video === undefined) ? "El Video es Requerido" : true)
     })
-  ]
+  ],
+  validation: (Rule) => Rule.required(),
 })

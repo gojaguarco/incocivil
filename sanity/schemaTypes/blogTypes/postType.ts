@@ -1,6 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import { imageSchema } from '../generalSchemas'
+import { ImageSchema } from '../generalSchemas'
 
 export const postType = defineType({
   name: 'post',
@@ -11,28 +11,27 @@ export const postType = defineType({
     defineField({
       name: 'title',
       type: 'string',
+      title: 'Título',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'subtitle',
-      type: 'string',
+      name: 'description',
+      type: 'text',
+      title: 'Corta descripción',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'slug',
-      type: 'slug',
-      options: {
-        source: 'title',
-      },
+      name: 'image',
+      title: 'Imagen de Portada',
+      type: 'imageObject',
+      validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'author',
-      type: 'reference',
-      to: {type: 'author'},
-    }),
-    imageSchema,
     defineField({
       name: 'categories',
+      title: 'Categoría',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'publishedAt',
@@ -41,17 +40,13 @@ export const postType = defineType({
     defineField({
       name: 'body',
       type: 'blockContent',
+      validation: (Rule) => Rule.required(),
     }),
   ],
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
-      media: 'mainImage',
-    },
-    prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      media: 'image',
     },
   },
 })

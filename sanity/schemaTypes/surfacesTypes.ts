@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { imageSchema } from "./generalSchemas";
+import { ImageSchema } from "./generalSchemas";
 
 
 export const surfaceTypesType = defineType({
@@ -19,7 +19,7 @@ export const surfaceTypesType = defineType({
             type: 'blockContent',
             validation: (Rule) => Rule.required(),
         }),
-        imageSchema,
+        ImageSchema,
     ]
 })
 
@@ -38,7 +38,7 @@ export const surfaceType = defineType({
             title: 'Descripción',
             type: 'text',
         }),
-        imageSchema,
+        ImageSchema,
         defineField({
             name: 'type',
             title: 'Tipo de Superficie',

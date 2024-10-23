@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { imageSchema } from "../generalSchemas";
+import { ImageSchema } from "../generalSchemas";
 import { EnvelopeIcon } from "@sanity/icons";
 
 export const contactSectionType = defineType({
@@ -20,7 +20,7 @@ export const contactSectionType = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
 		}),
-    imageSchema,
+    ImageSchema,
     defineField({
       name: 'homeProject',
       title: 'Proyecto para Hogar',

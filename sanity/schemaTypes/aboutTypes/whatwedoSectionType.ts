@@ -1,12 +1,11 @@
-import { UlistIcon } from "@sanity/icons";
+import { UsersIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
-import { ImageSchema } from "../generalSchemas";
 
-export const faqSectionType = defineType({
-  name: 'faqSection',
-  title: 'Preguntas Frecuentes',
+export const whatwedoSectionType = defineType({
+  name: 'whatwedoSection',
+  title: 'Lo que Hacemos',
   type: 'document',
-  icon: UlistIcon,
+  icon: UsersIcon,
   fields: [
     defineField({
 			name: 'title',
@@ -20,34 +19,32 @@ export const faqSectionType = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
 		}),
-		defineField({
-			name: 'sectionDescription',
-      title: 'Descripción de la sección',
+    defineField({
+      name: 'descriptionText',
+      title: 'Texto Descriptivo',
       type: 'text',
       validation: (Rule) => Rule.required(),
-		}),
-    ImageSchema,
+    }),
     defineField({
-      name: 'faqs',
-      title: 'Preguntas Frecuentes',
+      name: 'ctaButton',
+      title: 'Botón de Acción',
+      type: 'button',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'imageArray',
+      title: 'Imágenes de Trabajos',
       type: 'array',
       of: [
-        { 
-          type: 'reference',  
-          to: [{ type: 'faq' }]
-         }
+        { type: 'imageObject' }
       ],
-      options: {
-        insertMenu: {
-          showIcons: false,
-        },
-      },
       validation: (Rule) => [
         Rule.required(),
-        Rule.min(5),
+        Rule.min(3),
+        Rule.max(3),
         Rule.unique(),
       ]
-    })
+    }),
   ],
   preview: {
     select: {
@@ -65,7 +62,7 @@ export const faqSectionType = defineType({
       return {
         title: `${title}`,
         subtitle: `${subtitle}`,
-        media: UlistIcon,
+        media: UsersIcon,
       };
     },
   },
