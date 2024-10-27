@@ -32,6 +32,7 @@ export const surfaceType = defineType({
             name: 'title',
             title: 'Nombre',
             type: 'string',
+            validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: 'description',
@@ -44,6 +45,17 @@ export const surfaceType = defineType({
             title: 'Tipo de Superficie',
             type: 'reference',
             to: { type: 'surfaceTypes' },
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'price',
+            title: 'Precio m2',
+            type: 'number',
+        }),
+        defineField({
+            name: 'code',
+            title: 'Código del Material',
+            type: 'number',
         })
     ]
 })

@@ -35,9 +35,6 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('service')
         .title('Servicios')
         .icon(WrenchIcon),
-      S.documentTypeListItem('faq')
-        .title('Preguntas Frecuentes')
-        .icon(UlistIcon),
       S.listItem()
         .title("Blogs")
         .icon(DocumentTextIcon)
