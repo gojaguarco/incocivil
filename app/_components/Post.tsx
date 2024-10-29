@@ -2,21 +2,22 @@ import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 
 import { urlFor } from "@/sanity/lib/image";
-import { POST_QUERYResult } from "../../sanity.types";
-import Link from "next/link";
 
-export function Post({ post }: { post: POST_QUERYResult }) {
-  const { title, subtitle, mainImage, body } = post || {};
+import Link from "next/link";
+import { BLOG_QUERYResult } from "@/sanity.types";
+
+export function Post({ post }: { post: BLOG_QUERYResult }) {
+  const { title, description, image, body } = post || {};
 
   return (
     <main className="container mx-auto prose prose-lg p-4">
       {title ? <h1>{title}</h1> : null}
-      {subtitle ? <h2>{subtitle}</h2> : null}
+      {description ? <h2>{description}</h2> : null}
 
-      {mainImage?.asset?._ref ? (
+      {image?.asset?._ref ? (
         <Image
           className="float-left m-0 w-1/3 mr-4 rounded-lg"
-          src={urlFor(mainImage?.asset?._ref).width(300).height(300).url()}
+          src={urlFor(image?.asset?._ref).width(300).height(300).url()}
           width={300}
           height={300}
           alt={title || ""}

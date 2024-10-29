@@ -39,28 +39,6 @@ export type SanityImageDimensions = {
   aspectRatio?: number;
 };
 
-export type SanityFileAsset = {
-  _id: string;
-  _type: "sanity.fileAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
-  uploadId?: string;
-  path?: string;
-  url?: string;
-  source?: SanityAssetSourceData;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -68,22 +46,43 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Post = {
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
+export type Config = {
   _id: string;
-  _type: "post";
+  _type: "config";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: string;
-  subtitle?: string;
-  slug?: Slug;
-  author?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
+  contactLink: string;
+  information: {
+    email: string;
+    phone: number;
+    address?: string;
+    city: string;
+    country: string;
   };
-  mainImage?: {
+  socialLinks: Array<{
+    redSocial: "facebook" | "X" | "WhatsApp" | "Instagram" | "linkedIn" | "YouTube" | "TikTok" | "Otra";
+    url: string;
+    _type: "link";
+    _key: string;
+  }>;
+};
+
+export type Project = {
+  _id: string;
+  _type: "project";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  descriptionText: string;
+  image: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -92,18 +91,10 @@ export type Post = {
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    alt: string;
+    _type: "imageObject";
   };
-  categories?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
-  }>;
-  publishedAt?: string;
-  body?: Array<{
+  body: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -129,21 +120,63 @@ export type Post = {
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    alt: string;
+    _type: "imageObject";
+    _key: string;
+  } | {
+    video: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      _type: "file";
+    };
+    imagenDeCarga: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    _type: "video";
     _key: string;
   }>;
 };
 
-export type Author = {
+export type ProjectSection = {
   _id: string;
-  _type: "author";
+  _type: "projectSection";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name?: string;
-  slug?: Slug;
-  image?: {
+  titleDescription?: string;
+  title: string;
+  ctaButton1: Button;
+  projects: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "project";
+  }>;
+};
+
+export type ProjectContactSection = {
+  _id: string;
+  _type: "projectContactSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  titleDescription?: string;
+  title: string;
+  imageObject: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -152,17 +185,311 @@ export type Author = {
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt: string;
     _type: "image";
   };
-  bio?: Array<{
+};
+
+export type AboutHeroSection = {
+  _id: string;
+  _type: "aboutHeroSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  titleDescription: string;
+  title1: string;
+  title2: string;
+  highlightedTitle: string;
+  descriptionText: string;
+  ImageOrVideo: {
+    imagenOVideo?: boolean;
+    imagen?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    video?: VideoObject;
+  };
+};
+
+export type ImageSection = {
+  _id: string;
+  _type: "imageSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sectionName?: string;
+  descriptionText: string;
+  ctaButton1: Button;
+  ctaButton2?: Button;
+  ImageOrVideo: {
+    imagenOVideo?: boolean;
+    imagen?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    video?: VideoObject;
+  };
+};
+
+export type WhatwedoSection = {
+  _id: string;
+  _type: "whatwedoSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sectionName: string;
+  descriptionText: string;
+  ctaButton: Button;
+  imageArray: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+    _key: string;
+  }>;
+};
+
+export type ContactSection = {
+  _id: string;
+  _type: "contactSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sectionName: string;
+  imageObject: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  homeProject?: {
+    text: string;
+    ctaButton: Button;
+  };
+  comercialProject?: {
+    text: string;
+    ctaButton: Button;
+  };
+  contactCard?: {
+    title: string;
+    description: string;
+    ctaButton: Button;
+  };
+};
+
+export type Faq = {
+  _id: string;
+  _type: "faq";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  question: string;
+  answer: string;
+};
+
+export type FaqSection = {
+  _id: string;
+  _type: "faqSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sectionName: string;
+  sectionDescription: string;
+  imageObject: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  faqs: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "faq";
+  }>;
+};
+
+export type SurfaceSliderSection = {
+  _id: string;
+  _type: "surfaceSliderSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sectionName: string;
+  sectionDescription: string;
+  surfaceList: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "surface";
+  }>;
+};
+
+export type ImageOrVideo = {
+  _type: "ImageOrVideo";
+  imagenOVideo?: boolean;
+  imagen?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+  };
+  video?: VideoObject;
+};
+
+export type WhyusSection = {
+  _id: string;
+  _type: "whyusSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sectionName: string;
+  ImageOrVideo: {
+    imagenOVideo?: boolean;
+    imagen?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    video?: VideoObject;
+  };
+  benefits: Array<{
+    title: string;
+    description: string;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    _type: "benefit";
+    _key: string;
+  }>;
+  ctaButton: Button;
+};
+
+export type SecondaryService = {
+  _id: string;
+  _type: "secondaryService";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description: string;
+  imageObject: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  reference: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "service";
+  };
+};
+
+export type Service = {
+  _id: string;
+  _type: "service";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  descriptionText: string;
+  ImageOrVideo: {
+    imagenOVideo?: boolean;
+    imagen?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    video?: VideoObject;
+  };
+  body: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
       _type: "span";
       _key: string;
     }>;
-    style?: "normal";
-    listItem?: never;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet";
     markDefs?: Array<{
       href?: string;
       _type: "link";
@@ -170,6 +497,562 @@ export type Author = {
     }>;
     level?: number;
     _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+    _key: string;
+  } | {
+    video: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      _type: "file";
+    };
+    imagenDeCarga: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    _type: "video";
+    _key: string;
+  }>;
+};
+
+export type Surface = {
+  _id: string;
+  _type: "surface";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description?: string;
+  imageObject: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+  type: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "surfaceTypes";
+  };
+  price?: number;
+  code?: number;
+};
+
+export type SurfaceTypes = {
+  _id: string;
+  _type: "surfaceTypes";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+    _key: string;
+  } | {
+    video: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      _type: "file";
+    };
+    imagenDeCarga: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    _type: "video";
+    _key: string;
+  }>;
+  imageObject: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+  };
+};
+
+export type ServicesSection = {
+  _type: "servicesSection";
+  titleDescription: string;
+  title: string;
+  sectionName: string;
+  description: string;
+  ctaButton: Button;
+  primarySurfaces: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "surfaceTypes";
+  }>;
+  secondaryServices: Array<{
+    title: string;
+    description: string;
+    imageObject: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    reference: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "service";
+    };
+    _type: "secondaryService";
+    _key: string;
+  }>;
+};
+
+export type HomeHeroSection = {
+  _id: string;
+  _type: "homeHeroSection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  simpleTitle: string;
+  highlightedTitle: string;
+  descriptionCard?: {
+    descriptionTitle: string;
+    projectNumber: number;
+    descriptionText: string;
+    primaryButton: Button;
+    secondaryButton: Button;
+  };
+  expertiseCard?: {
+    title: string;
+    description: string;
+    ctaButton: Button;
+  };
+};
+
+export type Pages = {
+  _id: string;
+  _type: "pages";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  homePage: Array<{
+    simpleTitle: string;
+    highlightedTitle: string;
+    descriptionCard?: {
+      descriptionTitle: string;
+      projectNumber: number;
+      descriptionText: string;
+      primaryButton: Button;
+      secondaryButton: Button;
+    };
+    expertiseCard?: {
+      title: string;
+      description: string;
+      ctaButton: Button;
+    };
+    _type: "homeHeroSection";
+    _key: string;
+  } | {
+    _key: string;
+  } & ServicesSection | {
+    title: string;
+    sectionName: string;
+    ImageOrVideo: {
+      imagenOVideo?: boolean;
+      imagen?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        _type: "imageObject";
+      };
+      video?: VideoObject;
+    };
+    benefits: Array<{
+      title: string;
+      description: string;
+      image: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        _type: "imageObject";
+      };
+      _type: "benefit";
+      _key: string;
+    }>;
+    ctaButton: Button;
+    _type: "whyusSection";
+    _key: string;
+  } | {
+    title: string;
+    sectionName: string;
+    sectionDescription: string;
+    surfaceList: Array<{
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      _key: string;
+      [internalGroqTypeReferenceTo]?: "surface";
+    }>;
+    _type: "surfaceSliderSection";
+    _key: string;
+  } | {
+    title: string;
+    sectionName: string;
+    sectionDescription: string;
+    imageObject: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    faqs: Array<{
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      _key: string;
+      [internalGroqTypeReferenceTo]?: "faq";
+    }>;
+    _type: "faqSection";
+    _key: string;
+  } | {
+    title: string;
+    sectionName: string;
+    imageObject: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    homeProject?: {
+      text: string;
+      ctaButton: Button;
+    };
+    comercialProject?: {
+      text: string;
+      ctaButton: Button;
+    };
+    contactCard?: {
+      title: string;
+      description: string;
+      ctaButton: Button;
+    };
+    _type: "contactSection";
+    _key: string;
+  }>;
+  aboutPage: Array<{
+    titleDescription: string;
+    title1: string;
+    title2: string;
+    highlightedTitle: string;
+    descriptionText: string;
+    ImageOrVideo: {
+      imagenOVideo?: boolean;
+      imagen?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        _type: "imageObject";
+      };
+      video?: VideoObject;
+    };
+    _type: "aboutHeroSection";
+    _key: string;
+  } | {
+    title: string;
+    sectionName: string;
+    descriptionText: string;
+    ctaButton: Button;
+    imageArray: Array<{
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+      _key: string;
+    }>;
+    _type: "whatwedoSection";
+    _key: string;
+  } | {
+    title: string;
+    sectionName?: string;
+    descriptionText: string;
+    ctaButton1: Button;
+    ctaButton2?: Button;
+    ImageOrVideo: {
+      imagenOVideo?: boolean;
+      imagen?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        _type: "imageObject";
+      };
+      video?: VideoObject;
+    };
+    _type: "imageSection";
+    _key: string;
+  }>;
+  projectsPage: Array<{
+    titleDescription?: string;
+    title: string;
+    ctaButton1: Button;
+    projects: Array<{
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      _key: string;
+      [internalGroqTypeReferenceTo]?: "project";
+    }>;
+    _type: "projectSection";
+    _key: string;
+  } | {
+    titleDescription?: string;
+    title: string;
+    imageObject: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "image";
+    };
+    _type: "projectContactSection";
+    _key: string;
+  }>;
+};
+
+export type VideoObject = {
+  _type: "videoObject";
+  video: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    _type: "file";
+  };
+  imagenDeCarga: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+  };
+};
+
+export type Button = {
+  _type: "button";
+  text: string;
+  color: "Primario" | "Claro" | "Oscuro";
+  size: "Peque\xF1o" | "Mediano" | "Grande";
+  link: string;
+};
+
+export type Post = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  description: string;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+  };
+  categories: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  publishedAt?: string;
+  body: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+    _key: string;
+  } | {
+    video: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      _type: "file";
+    };
+    imagenDeCarga: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    _type: "video";
     _key: string;
   }>;
 };
@@ -181,14 +1064,7 @@ export type Category = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
   description?: string;
-};
-
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
 };
 
 export type BlockContent = Array<{
@@ -217,10 +1093,69 @@ export type BlockContent = Array<{
   };
   hotspot?: SanityImageHotspot;
   crop?: SanityImageCrop;
-  alt?: string;
-  _type: "image";
+  alt: string;
+  _type: "imageObject";
+  _key: string;
+} | {
+  video: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    _type: "file";
+  };
+  imagenDeCarga: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+  };
+  _type: "video";
   _key: string;
 }>;
+
+export type ImageObject = {
+  _type: "imageObject";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+  };
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt: string;
+};
+
+export type SanityFileAsset = {
+  _id: string;
+  _type: "sanity.fileAsset";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  originalFilename?: string;
+  label?: string;
+  title?: string;
+  description?: string;
+  altText?: string;
+  sha1hash?: string;
+  extension?: string;
+  mimeType?: string;
+  size?: number;
+  assetId?: string;
+  uploadId?: string;
+  path?: string;
+  url?: string;
+  source?: SanityAssetSourceData;
+};
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
@@ -279,21 +1214,33 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | Geopoint | Slug | Config | Project | ProjectSection | ProjectContactSection | AboutHeroSection | ImageSection | WhatwedoSection | ContactSection | Faq | FaqSection | SurfaceSliderSection | ImageOrVideo | WhyusSection | SecondaryService | Service | Surface | SurfaceTypes | ServicesSection | HomeHeroSection | Pages | VideoObject | Button | Post | Category | BlockContent | ImageObject | SanityFileAsset | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./sanity/lib/queries.ts
-// Variable: POSTS_QUERY
-// Query: *[_type == "post" && defined(slug.current)][0...12]{  _id, title, slug}
-export type POSTS_QUERYResult = Array<{
+// Source: ./sanity/queries/blogQueries.ts
+// Variable: BLOGS_QUERY
+// Query: *[_type == "post" ][0...12]{  _id, title, description, image}
+export type BLOGS_QUERYResult = Array<{
   _id: string;
-  title: string | null;
-  slug: Slug | null;
+  title: string;
+  description: string;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "imageObject";
+  };
 }>;
-// Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0]{  title, subtitle, body, mainImage}
-export type POST_QUERYResult = {
-  title: string | null;
-  subtitle: string | null;
+// Variable: BLOG_QUERY
+// Query: *[_type == "post" && _id == $id][0]{  title, description, body, image, categories, publishedAt}
+export type BLOG_QUERYResult = {
+  title: string;
+  description: string;
   body: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -320,11 +1267,35 @@ export type POST_QUERYResult = {
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
+    alt: string;
+    _type: "imageObject";
     _key: string;
-  }> | null;
-  mainImage: {
+  } | {
+    video: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      _type: "file";
+    };
+    imagenDeCarga: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt: string;
+      _type: "imageObject";
+    };
+    _type: "video";
+    _key: string;
+  }>;
+  image: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -333,16 +1304,24 @@ export type POST_QUERYResult = {
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
+    alt: string;
+    _type: "imageObject";
+  };
+  categories: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  publishedAt: string | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"post\" && defined(slug.current)][0...12]{\n  _id, title, slug\n}": POSTS_QUERYResult;
-    "*[_type == \"post\" && slug.current == $slug][0]{\n  title, subtitle, body, mainImage\n}": POST_QUERYResult;
+    "*[_type == \"post\" ][0...12]{\n  _id, title, description, image\n}": BLOGS_QUERYResult;
+    "*[_type == \"post\" && _id == $id][0]{\n  title, description, body, image, categories, publishedAt\n}": BLOG_QUERYResult;
   }
 }

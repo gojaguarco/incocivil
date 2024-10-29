@@ -1,30 +1,30 @@
 import { QueryParams } from "next-sanity";
-import { notFound } from "next/navigation";
 
-import { POSTS_QUERY, POST_QUERY } from "@/sanity/lib/queries";
+import { BLOGS_QUERY, BLOG_QUERY } from "@/sanity/queries/blogQueries";
 
 import { client, sanityFetch } from "@/sanity/lib/client";
 import { Post } from "@/app/_components/Post";
 
 export async function generateStaticParams() {
   const posts = await client.fetch(
-    POSTS_QUERY,
+    BLOGS_QUERY,
     {},
     { perspective: "published" }
   );
 
   return posts.map((post) => ({
-    slug: post?.slug?.current,
+    id: post?._id,
   }));
 }
 
-export default async function Page({ params }: { params: QueryParams }) {
+export default async function Page(props: { params: Promise<QueryParams> }) {
+  const params = await props.params;
   const post = await sanityFetch({
-    query: POST_QUERY,
+    query: BLOG_QUERY,
     params,
   });
   if (!post) {
-    return notFound();
+    return (<>oli</>);
   }
   return <Post post={post} />;
 }
